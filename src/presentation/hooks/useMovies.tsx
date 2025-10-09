@@ -12,8 +12,11 @@ export const useMovies = () => {
   }, []);
 
   const initialLoad = async () => {
-    const nowPlayingMovies = await UseCases.moviesPlayingUseCase(movieDBFetcher)
+    const nowPlayingMovies = await UseCases.moviesPlayingUseCase(movieDBFetcher);
   };
 
-  return {};
+  return {
+    isLoading,
+    nowPlaying,
+  };
 };
