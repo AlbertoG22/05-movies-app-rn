@@ -5,6 +5,7 @@ import { movieDBFetcher } from '../../config/adapters/movieDB.adapter';
 
 export const useMovies = () => {
   const [isLoading, setIsLoading] = useState(true);
+
   const [nowPlaying, setNowPlaying] = useState<Movie[]>([]);
   const [popular, setPopular] = useState<Movie[]>([]);
   const [topRated, setTopRated] = useState<Movie[]>([]);
@@ -16,16 +17,20 @@ export const useMovies = () => {
 
   const initialLoad = async () => {
     const nowPlayingPromise = UseCases.moviesPlayingUseCase(movieDBFetcher);
+    // const nowPlayingMovies = await UseCases.moviesPlayingUseCase(movieDBFetcher);
     const popularPromise = UseCases.moviesPopularUseCase(movieDBFetcher);
+    // const popularMovies = await UseCases.moviesPopularUseCase(movieDBFetcher);
     const topRatedPromise = UseCases.moviesTopRatedUseCase(movieDBFetcher);
+    // const topRatedMovies = await UseCases.moviesTopRatedUseCase(movieDBFetcher);
     const upcomingPromise = UseCases.moviesUpcomingUseCase(movieDBFetcher);
+    // const upcomingMovies = await UseCases.moviesUpcomingUseCase(movieDBFetcher);
 
     const [
       nowPlayingMovies,
       popularMovies,
       topRatedMovies,
       upcomingMovies,
-    ] = await Promise.all([
+     ] = await Promise.all([
       nowPlayingPromise,
       popularPromise,
       topRatedPromise,
@@ -35,17 +40,9 @@ export const useMovies = () => {
     setNowPlaying( nowPlayingMovies );
     setPopular( popularMovies );
     setTopRated( topRatedMovies );
-    setTopRated( topRatedMovies );
     setUpcoming( upcomingMovies );
 
     setIsLoading(false);
-
-    console.log({
-      nowPlayingMovies,
-      popularMovies,
-      topRatedMovies,
-      upcomingMovies,
-    })
   };
 
   return {
