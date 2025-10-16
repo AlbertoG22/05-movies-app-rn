@@ -3,6 +3,8 @@ import { Movie } from '../../core/entities/movie.entity';
 import * as UseCases from '../../core/use-cases';
 import { movieDBFetcher } from '../../config/adapters/movieDB.adapter';
 
+let popularPageNumber = 1;
+
 export const useMovies = () => {
   const [isLoading, setIsLoading] = useState(true);
 
@@ -17,13 +19,9 @@ export const useMovies = () => {
 
   const initialLoad = async () => {
     const nowPlayingPromise = UseCases.moviesPlayingUseCase(movieDBFetcher);
-    // const nowPlayingMovies = await UseCases.moviesPlayingUseCase(movieDBFetcher);
     const popularPromise = UseCases.moviesPopularUseCase(movieDBFetcher);
-    // const popularMovies = await UseCases.moviesPopularUseCase(movieDBFetcher);
     const topRatedPromise = UseCases.moviesTopRatedUseCase(movieDBFetcher);
-    // const topRatedMovies = await UseCases.moviesTopRatedUseCase(movieDBFetcher);
     const upcomingPromise = UseCases.moviesUpcomingUseCase(movieDBFetcher);
-    // const upcomingMovies = await UseCases.moviesUpcomingUseCase(movieDBFetcher);
 
     const [
       nowPlayingMovies,
@@ -51,5 +49,15 @@ export const useMovies = () => {
     popular,
     topRated,
     upcoming,
+
+    // Methods
+    popularNextPage: async() => {
+      popularPageNumber++;
+      const popularMovies = await UseCases.moviesPopularUseCase( movieDBFetcher, {
+        page: popularPageNumber,
+      });
+
+      setPopular( prev => [ ...prev, ...popularMovies ] );
+    }
   };
 };
